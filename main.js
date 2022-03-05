@@ -4,8 +4,11 @@ let submit = document.querySelector(".add");
 let listTasks = document.querySelector(".tasks");
 
 let arrayOfTasks = [];
+if (localStorage.getItem("tasks")) {
+  arrayOfTasks = JSON.parse(localStorage.getItem("tasks"));
+}
 
-
+getTasksFromLocalStorage();
 //Add Task
 submit.onclick = function () {
   if (input.value !== "") {
@@ -14,6 +17,18 @@ submit.onclick = function () {
   }
 };
 
+listTasks.addEventListener("click", (e) => {
+  if (e.target.classList.contains("edit")) {
+    console.log("edit");
+  }
+  if (e.target.classList.contains("delete")) {
+    deleteTaskWith(
+      e.target.parentElement.parentElement.getAttribute("data-id")
+    );
+
+    e.target.parentElement.parentElement.remove();
+  }
+});
 
 function addTaskToArray(taskText) {
   const task = {
@@ -25,6 +40,7 @@ function addTaskToArray(taskText) {
   arrayOfTasks.push(task);
 
   displayTask(arrayOfTasks);
+  setTasksOnLocalStorage(arrayOfTasks);
 }
 
 function displayTask(arr) {
@@ -52,6 +68,19 @@ function displayTask(arr) {
   });
 }
 
+function setTasksOnLocalStorage(arr) {
+  window.localStorage.setItem("tasks", JSON.stringify(arr));
+}
 
+function getTasksFromLocalStorage() {
+  let data = window.localStorage.getItem("tasks");
+  if (data) {
+    let tasks = JSON.parse(data);
+    displayTask(tasks);
+  }
+}
 
-
+function deleteTaskWith(taskId) {
+  arrayOfTasks = arrayOfTasks.filter((task) => task.id != taskId);
+  setTasksOnLocalStorage(arrayOfTasks);
+}
