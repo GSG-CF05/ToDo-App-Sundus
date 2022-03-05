@@ -4,11 +4,8 @@ let submit = document.querySelector(".add");
 let listTasks = document.querySelector(".tasks");
 
 let arrayOfTasks = [];
-if (localStorage.getItem("tasks")) {
-  arrayOfTasks = JSON.parse(localStorage.getItem("tasks"));
-}
 
-getTasksFromLocalStorage();
+
 //Add Task
 submit.onclick = function () {
   if (input.value !== "") {
@@ -16,7 +13,6 @@ submit.onclick = function () {
     input.value = "";
   }
 };
-
 
 
 function addTaskToArray(taskText) {
@@ -29,7 +25,6 @@ function addTaskToArray(taskText) {
   arrayOfTasks.push(task);
 
   displayTask(arrayOfTasks);
-  setTasksOnLocalStorage(arrayOfTasks);
 }
 
 function displayTask(arr) {
@@ -57,16 +52,6 @@ function displayTask(arr) {
   });
 }
 
-function setTasksOnLocalStorage(arr) {
-  window.localStorage.setItem("tasks", JSON.stringify(arr));
-}
 
-function getTasksFromLocalStorage() {
-  let data = window.localStorage.getItem("tasks");
-  if (data) {
-    let tasks = JSON.parse(data);
-    displayTask(tasks);
-  }
-}
 
 
